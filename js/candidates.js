@@ -48,6 +48,20 @@ const CANDIDATES = [
             "Opción válida y oficial prevista por el régimen electoral",
             "Permite manifestar disconformidad o falta de preferencia partidaria"
         ]
+    },
+    {
+        id: "null",
+        number: "---",
+        name: "Voto Nulo",
+        party: "Opción Electoral no Computable",
+        slogan: "Emisión deliberada de boleta no computable",
+        photo: "assets/null-vote.svg",
+        colorTheme: "#b91c1c",
+        badgeColor: "#991b1b",
+        proposals: [
+            "Expresa la anulación formal del sufragio por decisión del elector",
+            "Registrado en el acta oficial de escrutinio como voto nulo"
+        ]
     }
 ];
 

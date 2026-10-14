@@ -128,8 +128,8 @@ const App = {
         const btnCancelSelection = document.getElementById("btn-cancel-step2");
         if (btnCancelSelection) {
             btnCancelSelection.addEventListener("click", () => {
-                this.goToStep(1);
-                NielsenFeedback.showToast("Sesión de votación cancelada.", "info");
+                this.resetVoterFlow();
+                NielsenFeedback.showToast("Sesión de votación cancelada. Se ha limpiado el documento ingresado.", "info");
             });
         }
 

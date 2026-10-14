@@ -59,7 +59,8 @@ El sistema cumple estrictamente con el requerimiento de no almacenar informació
 
 ---
 
-## 👤 Candidatos de Prueba
+## 👤 Opciones Electorales en el Cuarto Oscuro
 1. **Dra. Valeria Gómez** - *Frente Ciudadano y Futuro* (Lista 101)
 2. **Ing. Roberto Martínez** - *Unión por la Transformación* (Lista 202)
 3. **Voto en Blanco** - *Opción Institucional Oficial*
+4. **Voto Nulo** - *Opción Electoral no Computable*

@@ -103,6 +103,9 @@ const Accessibility = {
             } else if (e.key === "3" || e.key === "0") {
                 const bBlank = document.querySelector('[data-candidate-id="blank"]');
                 if (bBlank) bBlank.click();
+            } else if (e.key === "4") {
+                const bNull = document.querySelector('[data-candidate-id="null"]');
+                if (bNull) bNull.click();
             } else if (e.key === "h" || e.key === "H") {
                 // Atajo H para Ayuda
                 const helpBtn = document.getElementById("btn-open-help");

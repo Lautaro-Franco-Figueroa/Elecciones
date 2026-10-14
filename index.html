@@ -32,9 +32,6 @@
                 <button class="nav-tab-btn" data-tab="tribunal" aria-selected="false">
                     ⚖️ Tribunal &amp; Auditoría
                 </button>
-                <button class="nav-tab-btn" data-tab="nielsen" aria-selected="false">
-                    📐 Heurísticas de Nielsen
-                </button>
             </nav>
 
             <!-- Herramientas de Accesibilidad (Heurística #7) -->
@@ -339,81 +336,6 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 4: CUMPLIMIENTO DE LAS HEURÍSTICAS DE JAKOB NIELSEN -->
-        <section id="tab-content-nielsen" class="tab-content-section hidden" aria-label="Justificación de las heurísticas de Nielsen">
-            <div class="step-panel">
-                <div class="step-header">
-                    <h2 class="step-title">Evaluación Heurística de Usabilidad (Jakob Nielsen)</h2>
-                    <p class="step-description">
-                        Documentación técnica de cómo el sistema implementa cada uno de los 10 principios de usabilidad para todos los participantes.
-                    </p>
-                </div>
-
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">1. Visibilidad del estado del sistema</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Barra de pasos numerada e interactiva (1 al 4), estados de carga explícitos y notificaciones toast inmediatas.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">2. Coincidencia con el mundo real</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Metáfora de boletas electorales con fotos, números de lista y urna digital tradicional sin tecnicismos.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #fbbf24;">3. Control y libertad del usuario (Deshacer)</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Botón para deshacer o cambiar el voto con <strong>advertencia explícita</strong> y confirmación antes de la emisión final.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">4. Consistencia y estándares</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Código de colores estandarizado: verde para confirmar, ámbar para advertencias/deshacer, azul para acciones primarias.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #fbbf24;">5. Prevención de errores</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Bloqueo de avance si no hay candidato seleccionado, advertencia obligatoria al deshacer y validación numérica de DNI.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">6. Reconocimiento antes que recuerdo</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Fotografías y logotipos de candidatos siempre visibles; resumen completo en el Paso 3 antes de confirmar.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">7. Flexibilidad y eficiencia de uso</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Atajos de teclado rápidos (teclas 1, 2, 3), presets de prueba y teclado táctil en pantalla para pantallas de quiosco.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">8. Diseño estético y minimalista</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Interfaz moderna, alta legibilidad, espacios limpios y eliminación de cualquier sobrecarga informativa innecesaria.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">9. Diagnosticar y recuperarse de errores</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Mensajes en lenguaje natural si el documento ya votó, con orientación clara de pasos a seguir.
-                        </p>
-                    </div>
-                    <div class="stat-card">
-                        <strong style="color: #60a5fa;">10. Ayuda y documentación</strong>
-                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">
-                            Guía interactiva paso a paso accesible en todo momento mediante el botón de ayuda o la tecla H.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
     <!-- Footer de la Aplicación -->
@@ -480,6 +402,7 @@
                     <li><kbd>[1]</kbd> : Seleccionar Candidata Dra. Valeria Gómez</li>
                     <li><kbd>[2]</kbd> : Seleccionar Candidato Ing. Roberto Martínez</li>
                     <li><kbd>[3]</kbd> o <kbd>[0]</kbd> : Seleccionar Voto en Blanco</li>
+                    <li><kbd>[4]</kbd> : Seleccionar Voto Nulo</li>
                     <li><kbd>[H]</kbd> : Abrir esta guía de ayuda</li>
                     <li><kbd>[Esc]</kbd> : Cerrar diálogos y modales</li>
                 </ul>
