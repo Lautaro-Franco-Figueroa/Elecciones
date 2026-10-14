@@ -96,6 +96,12 @@ const App = {
                     this.handleVerifyVoter();
                 }
             });
+            inputDoc.addEventListener("input", () => this.validateDniInput(false));
+            inputDoc.addEventListener("blur", () => {
+                if (inputDoc.value.trim().length > 0) {
+                    this.validateDniInput(true);
+                }
+            });
         }
 
         // Botones de presets rápidos para testing
@@ -103,12 +109,17 @@ const App = {
             btn.addEventListener("click", (e) => {
                 const doc = e.currentTarget.getAttribute("data-doc");
                 if (doc === "random") {
-                    const rnd = Math.floor(30000000 + Math.random() * 15000000);
-                    inputDoc.value = rnd.toString();
+                    const rnd = Math.floor(30000000 + Math.random() * 15000000).toString();
+                    inputDoc.value = `${rnd.substring(0, 2)}.${rnd.substring(2, 5)}.${rnd.substring(5)}`;
+                } else if (doc === "38123456") {
+                    inputDoc.value = "38.123.456";
+                } else if (doc === "41987654") {
+                    inputDoc.value = "41-987-654";
                 } else {
                     inputDoc.value = doc;
                 }
                 NielsenFeedback.playSound('select');
+                this.validateDniInput(false);
                 inputDoc.focus();
             });
         });
@@ -202,6 +213,7 @@ const App = {
 
     /**
      * Teclado numérico virtual para quioscos accesibles.
+     * Soporta números (0-9), punto (.) y guion (-).
      */
     bindKeypad() {
         const inputDoc = document.getElementById("input-voter-doc");
@@ -214,16 +226,165 @@ const App = {
 
                 if (key === "clear") {
                     inputDoc.value = "";
+                    this.validateDniInput(false);
                 } else if (key === "backspace") {
                     inputDoc.value = inputDoc.value.slice(0, -1);
-                } else {
-                    if (inputDoc.value.length < 10) {
+                    this.validateDniInput(false);
+                } else if (key === "." || key === "-") {
+                    const currentVal = inputDoc.value;
+                    if (currentVal.length === 0 || /[.\-]$/.test(currentVal)) {
+                        this.showDniFeedback("No se puede colocar un punto o guion al inicio ni de forma consecutiva.", "warning");
+                        NielsenFeedback.playSound('warning');
+                        this.triggerInputShake(inputDoc);
+                    } else {
                         inputDoc.value += key;
+                        this.validateDniInput(false);
+                    }
+                } else {
+                    // Tecla numérica 0-9
+                    const currentDigits = inputDoc.value.replace(/\D/g, "");
+                    if (currentDigits.length >= 8) {
+                        this.showDniFeedback("⚠️ El DNI no acepta más de 8 números.", "warning");
+                        NielsenFeedback.playSound('warning');
+                        this.triggerInputShake(inputDoc);
+                    } else {
+                        inputDoc.value += key;
+                        this.validateDniInput(false);
                     }
                 }
                 inputDoc.focus();
             });
         });
+    },
+
+    /**
+     * Valida en tiempo real la carga del DNI según las reglas:
+     * - No acepta más de 8 números.
+     * - Permite números, puntos (.) y guiones (-).
+     * - Muestra advertencias claras y visuales ante formato incorrecto.
+     * @param {boolean} isSubmission - Si se está intentando avanzar de paso
+     * @returns {{ valid: boolean, cleanDigits: string }}
+     */
+    validateDniInput(isSubmission = false) {
+        const inputDoc = document.getElementById("input-voter-doc");
+        const feedback = document.getElementById("dni-feedback-msg");
+        if (!inputDoc || !feedback) return { valid: false, cleanDigits: "" };
+
+        let val = inputDoc.value;
+
+        // 1. Detectar y filtrar caracteres no permitidos
+        if (/[^0-9.\-]/.test(val)) {
+            val = val.replace(/[^0-9.\-]/g, "");
+            inputDoc.value = val;
+            this.showDniFeedback(
+                "Solo se permiten números, puntos (.) o guiones (-). Se eliminaron caracteres no válidos.",
+                "warning"
+            );
+            NielsenFeedback.playSound('warning');
+            this.triggerInputShake(inputDoc);
+        }
+
+        // 2. Limitar a un máximo estricto de 8 números
+        const digits = val.replace(/\D/g, "");
+        if (digits.length > 8) {
+            let count = 0;
+            let truncated = "";
+            for (let i = 0; i < val.length; i++) {
+                const char = val[i];
+                if (/\d/.test(char)) {
+                    if (count < 8) {
+                        truncated += char;
+                        count++;
+                    }
+                } else {
+                    truncated += char;
+                }
+            }
+            inputDoc.value = truncated;
+            val = truncated;
+            this.showDniFeedback(
+                "⚠️ El DNI no puede tener más de 8 números.",
+                "warning"
+            );
+            NielsenFeedback.playSound('warning');
+            this.triggerInputShake(inputDoc);
+        }
+
+        const currentDigits = val.replace(/\D/g, "");
+
+        // 3. Campo vacío
+        if (val.trim().length === 0) {
+            feedback.classList.add("hidden");
+            inputDoc.classList.remove("input-error", "input-success");
+            return { valid: false, cleanDigits: "" };
+        }
+
+        // 4. Verificación de sintaxis de separadores
+        const hasDoubleSymbols = /\.{2,}|-{2,}|\.-|-\./.test(val);
+        const startsWithSymbol = /^[.\-]/.test(val);
+
+        if (hasDoubleSymbols || startsWithSymbol) {
+            this.showDniFeedback("Formato incorrecto. Evite puntos o guiones al inicio o consecutivos.", "error");
+            inputDoc.classList.add("input-error");
+            inputDoc.classList.remove("input-success");
+            return { valid: false, cleanDigits: currentDigits };
+        }
+
+        // 5. Verificación de cantidad de números
+        if (currentDigits.length < 7) {
+            if (isSubmission) {
+                this.showDniFeedback(
+                    `⚠️ DNI incompleto: Ingrese 7 u 8 números (actualmente tiene ${currentDigits.length}).`,
+                    "error"
+                );
+                inputDoc.classList.add("input-error");
+                inputDoc.classList.remove("input-success");
+                this.triggerInputShake(inputDoc);
+            } else {
+                this.showDniFeedback(
+                    `Faltan ${8 - currentDigits.length} número(s) para completar el DNI (mínimo 7).`,
+                    "warning"
+                );
+                inputDoc.classList.remove("input-error", "input-success");
+            }
+            return { valid: false, cleanDigits: currentDigits };
+        } else if (currentDigits.length >= 7 && currentDigits.length <= 8) {
+            this.showDniFeedback(
+                `✓ DNI con formato válido (${currentDigits.length} números ingresados).`,
+                "success"
+            );
+            inputDoc.classList.remove("input-error");
+            inputDoc.classList.add("input-success");
+            return { valid: true, cleanDigits: currentDigits };
+        }
+
+        return { valid: false, cleanDigits: currentDigits };
+    },
+
+    /**
+     * Despliega el aviso visual bajo el campo de DNI.
+     */
+    showDniFeedback(message, type) {
+        const feedback = document.getElementById("dni-feedback-msg");
+        if (!feedback) return;
+
+        feedback.className = `dni-feedback-msg dni-feedback-${type}`;
+        const icons = {
+            warning: "⚠️",
+            error: "🚫",
+            success: "✅"
+        };
+        feedback.innerHTML = `<span aria-hidden="true">${icons[type] || "ℹ️"}</span> <span>${message}</span>`;
+        feedback.classList.remove("hidden");
+    },
+
+    /**
+     * Aplica animación de sacudida visual ante error.
+     */
+    triggerInputShake(inputElement) {
+        inputElement.classList.remove("input-error-shake");
+        void inputElement.offsetWidth;
+        inputElement.classList.add("input-error-shake");
     },
 
     /**
@@ -233,8 +394,14 @@ const App = {
         const inputDoc = document.getElementById("input-voter-doc");
         const docValue = inputDoc ? inputDoc.value.trim() : "";
 
-        if (!docValue) {
-            NielsenFeedback.showToast("Por favor, ingrese un número de documento válido.", "warning");
+        // Validar DNI antes de proceder
+        const validation = this.validateDniInput(true);
+        if (!validation.valid) {
+            NielsenFeedback.playSound('error');
+            NielsenFeedback.showToast(
+                "DNI incorrecto: Debe tener 7 u 8 números válidos.",
+                "error"
+            );
             inputDoc.focus();
             return;
         }
@@ -250,6 +417,8 @@ const App = {
         btnVerify.innerHTML = `Ingresar al Cuarto Oscuro &rarr;`;
 
         if (!check.allowed) {
+            this.showDniFeedback(check.reason, "error");
+            this.triggerInputShake(inputDoc);
             NielsenFeedback.showToast(check.reason, "error", 6000);
             return;
         }
@@ -371,7 +540,13 @@ const App = {
         this.selectedCandidate = null;
         
         const inputDoc = document.getElementById("input-voter-doc");
-        if (inputDoc) inputDoc.value = "";
+        if (inputDoc) {
+            inputDoc.value = "";
+            inputDoc.classList.remove("input-error", "input-success", "input-error-shake");
+        }
+
+        const feedback = document.getElementById("dni-feedback-msg");
+        if (feedback) feedback.classList.add("hidden");
 
         this.clearSelectionVisuals();
         this.goToStep(1);

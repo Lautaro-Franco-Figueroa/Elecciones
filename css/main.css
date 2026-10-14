@@ -322,6 +322,59 @@ body {
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.25);
 }
 
+.input-text.input-error {
+    border-color: #ef4444 !important;
+    background: #2a1215;
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.3) !important;
+}
+
+.input-text.input-success {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.25) !important;
+}
+
+.input-error-shake {
+    animation: inputShake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes inputShake {
+    10%, 90% { transform: translate3d(-2px, 0, 0); }
+    20%, 80% { transform: translate3d(4px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+    40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+/* Mensaje de feedback de DNI */
+.dni-feedback-msg {
+    margin-top: 8px;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.dni-feedback-warning {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #fde68a;
+}
+
+.dni-feedback-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+.dni-feedback-success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #a7f3d0;
+}
+
 /* Teclado numérico virtual */
 .virtual-keypad {
     display: grid;

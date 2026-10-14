@@ -56,10 +56,18 @@ const ElectionStore = {
      * @returns {Promise<{ allowed: boolean, reason?: string, voterHash?: string }>}
      */
     async checkVoter(rawDocument) {
-        if (!rawDocument || String(rawDocument).trim().length < 6) {
+        if (!rawDocument) {
             return {
                 allowed: false,
-                reason: "El número de documento ingresado es demasiado corto o no es válido."
+                reason: "Por favor, ingrese un número de documento."
+            };
+        }
+
+        const cleanDigits = String(rawDocument).replace(/\D/g, "");
+        if (cleanDigits.length < 7 || cleanDigits.length > 8) {
+            return {
+                allowed: false,
+                reason: `El DNI debe contener entre 7 y 8 números (actualmente tiene ${cleanDigits.length}).`
             };
         }
 

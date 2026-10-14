@@ -40,7 +40,7 @@ No requiere instalación de servidores, Node.js ni compiladores. Funciona de man
 2. **Coincidencia con el mundo real:** Metáfora de Boleta Única y Urna física.
 3. **Control y libertad del usuario:** Capacidad de deshacer el voto con diálogo de advertencia explícito.
 4. **Consistencia y estándares:** Códigos de colores normalizados (Verde = Confirmar, Naranja = Deshacer, Azul = Navegación).
-5. **Prevención de errores:** Deshabilitación de botones hasta seleccionar opción y confirmación final.
+5. **Prevención de errores:** Límite estricto de 8 números en DNI, admisión flexible de puntos (.) y guiones (-), avisos visuales en tiempo real ante carga incorrecta y confirmación obligatoria.
 6. **Reconocimiento antes que recuerdo:** Fotografías de alta calidad y pantalla de revisión detallada.
 7. **Flexibilidad y eficiencia:** Atajos de teclado (`1`, `2`, `3`, `H`), modo kiosco y presets de prueba.
 8. **Diseño estético y minimalista:** Interfaz moderna, limpia, sin distracciones.

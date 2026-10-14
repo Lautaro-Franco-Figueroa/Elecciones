@@ -94,9 +94,10 @@
                         <div class="form-group">
                             <label for="input-voter-doc" class="form-label">
                                 <span>Número de Documento (DNI)</span>
-                                <span class="shortcut-pill">Solo números</span>
+                                <span class="shortcut-pill">Máx. 8 números (admite . y -)</span>
                             </label>
-                            <input type="text" id="input-voter-doc" class="input-text" placeholder="Ej: 38123456" maxlength="10" inputmode="numeric" autocomplete="off" autofocus>
+                            <input type="text" id="input-voter-doc" class="input-text" placeholder="Ej: 38.123.456 o 38123456" maxlength="12" inputmode="text" autocomplete="off" autofocus>
+                            <div id="dni-feedback-msg" class="dni-feedback-msg hidden" role="status" aria-live="polite"></div>
                         </div>
 
                         <!-- Teclado Numérico Virtual para Pantallas Táctiles / Kiosco Accesible -->
@@ -110,9 +111,11 @@
                             <button type="button" class="keypad-btn" data-key="7">7</button>
                             <button type="button" class="keypad-btn" data-key="8">8</button>
                             <button type="button" class="keypad-btn" data-key="9">9</button>
-                            <button type="button" class="keypad-btn keypad-btn-special" data-key="clear" title="Borrar todo">C</button>
+                            <button type="button" class="keypad-btn keypad-btn-special" data-key="." title="Punto">.</button>
                             <button type="button" class="keypad-btn" data-key="0">0</button>
-                            <button type="button" class="keypad-btn keypad-btn-special" data-key="backspace" title="Borrar último dígito">&larr;</button>
+                            <button type="button" class="keypad-btn keypad-btn-special" data-key="-" title="Guion">-</button>
+                            <button type="button" class="keypad-btn keypad-btn-special" data-key="clear" title="Borrar todo">C</button>
+                            <button type="button" class="keypad-btn keypad-btn-special" data-key="backspace" title="Borrar último dígito" style="grid-column: span 2;">&larr; Borrar</button>
                         </div>
 
                         <!-- Presets de Demostración Rápida -->

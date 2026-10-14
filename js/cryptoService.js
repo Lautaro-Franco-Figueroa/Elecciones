@@ -44,7 +44,8 @@ const CryptoService = {
      */
     async anonymizeVoterId(rawDocument) {
         if (!rawDocument) return "";
-        const cleanDoc = String(rawDocument).trim().toUpperCase();
+        // Quitar puntos, guiones y espacios para asegurar igualdad criptográfica de hashes
+        const cleanDoc = String(rawDocument).replace(/[\.\-\s]/g, "").trim().toUpperCase();
         return await this.sha256(`${this.TABLE_SALT}::${cleanDoc}`);
     },
 
